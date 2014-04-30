@@ -1,4 +1,4 @@
 convert-number-to-english
 =========================
 
-Given an inputted number, convert to English
+Take a number, and convert it to English
