@@ -8,29 +8,6 @@ var convertNumToText = (function () {
             "tenToHundred": ["ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"],
             "numCategory": ["", "", "thousand", "million", "billion", "trillion", "gazillion"]
         };
-
-    var chunkNumber = function (num) {
-        /**
-         * Chunk our number into groups of three digits starting from right to left
-         * 1234 would return array ['234', '1']
-         * @param num - the input number
-         * @returns {Array} -
-         */
-        var i = num.length,
-            x;
-        var newArray = [];
-        while (i <= num.length && i > 0) {
-            if (i - 3 < 0) {
-                x = i;
-                newArray.push(num.substr(0, i));
-            } else {
-                x = i - 3;
-                newArray.push(num.substr(x, 3));
-            }
-            i = i - 3;
-        }
-        return newArray;
-    };
     /**
      * Get the text version of a passed (up to) three digit number
      * '12' would return 'twelve', '100' would return 'one hundred'
@@ -91,15 +68,14 @@ var convertNumToText = (function () {
     };
 
     _self.translate = function (num) {
-        var newArray = chunkNumber(num);
         var numberToText = "";
-        var bigNumRef = newArray.length;
-
+        var numberChunked = num.split( /(?=(?:...)*$)/ ); // split array in chunks of three numbers (or less);
+        var bigNumRef = numberChunked.length;
         /**
          * Loop through the 3 digit chunks of the number provided.
          * Add a description for each chunk e.g. 'thousand', 'million' etc.
          */
-        newArray.reverse().forEach(function (ournum) {
+        numberChunked.forEach(function (ournum) {
 
             var returnedText = getText(ournum);
             numberToText += returnedText;
